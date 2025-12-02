@@ -5,10 +5,10 @@ K = TypeVar("K")
 class Vector (Generic[K]):
     def __init__(self, data: List[K]):
         self.data = data
-    
+
     def __repr__(self):
         return f"Vector({self.data})"
-
+    
     def _assertion(self, vx: "Vector[K]"):
         assert len(self.data) == len(vx.data), \
             "Two Vectors are not in the same shape"
@@ -24,14 +24,11 @@ class Vector (Generic[K]):
     def scl(self, s: K):
         self.data = [i * s for i in self.data]
 
-#TO-DO: I am not sure if i should add assertion error if its not rectangular
+
 class Matrix (Generic[K]):
     def __init__(self, data: List[K][K]):
         self.data = data
 
-    def __repr__(self):
-        return f"Matrix({self.data})"
-    
     def _assertion(self, mx: "Matrix[K]"):
         assert len(self.data) == len(mx.data), \
             "Two matrices are not in the same shape"
@@ -59,3 +56,22 @@ class Matrix (Generic[K]):
             [i * s for i in row]
             for row in self.data
         ]
+
+def linear_combination(vs: list[Vector], es: list[K]) -> Vector[K]:
+
+    v_new = Vector(vs[0].data if len(vs) > 0 else [])
+    v_new.scl(0)
+    for v,e in zip(vs,es):
+        v.scl(e)
+        v_new.add(v)
+
+def lerp(u :K,v :K,t :float) -> Vector:
+
+    assert type(u) == type(v)
+    if isinstance(u, Vector):
+        v.sub(u)
+        v.scl(t)
+        u.add(v)
+        return u
+    else:
+        return (u + t * (v - u))
