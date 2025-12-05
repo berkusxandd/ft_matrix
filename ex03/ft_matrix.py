@@ -23,7 +23,13 @@ class Vector (Generic[K]):
 
     def scl(self, s: K):
         self.data = [i * s for i in self.data]
-
+    
+    def dot(self, v: "Vector[K]") -> K:
+        s = 0
+        self._assertion(v)
+        for a,b in zip(self.data, v.data):
+            s += a * b
+        return s
 
 class Matrix (Generic[K]):
     def __init__(self, data: List[K][K]):

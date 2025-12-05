@@ -1,5 +1,5 @@
 from typing import TypeVar, Generic, List
-
+import math
 K = TypeVar("K")
 
 class Vector (Generic[K]):
@@ -23,6 +23,32 @@ class Vector (Generic[K]):
 
     def scl(self, s: K):
         self.data = [i * s for i in self.data]
+    
+    def dot(self, v: "Vector[K]") -> K:
+        s = 0
+        self._assertion(v)
+        for a,b in zip(self.data, v.data):
+            s += a * b
+        return s
+    
+    def norm_1(self):
+        s = 0
+        for i in range(len(self.data)):
+            s += abs(self.data[i])
+        return s
+    
+    def norm(self):
+        s = 0
+        for i in self.data:
+            s += pow(i,2)
+        return pow(s,0.5)
+    
+    def norm_inf(self):
+        max_i = 0
+        for i in self.data:
+            if max_i < abs(i):
+                max_i = abs(i)
+        return max_i
 
 
 class Matrix (Generic[K]):
@@ -77,3 +103,6 @@ def lerp(u :K,v :K,t :float):
         return u
     else:
         return (u + t * (v - u))
+    
+def angle_cos(u :"Vector[K]", v: "Vector[K]") -> K:
+    return ((u.dot(v)) / (u.norm() * v.norm()))
