@@ -134,7 +134,16 @@ class Matrix (Generic[K]):
                 raise ValueError("Matrix is not square.")
             sum += row[i]
         return sum
-        
+    
+    def transpose(self) -> "Matrix[K]":
+        if len(self.data) == 0:
+            raise ValueError("Cannot transpose this matrix")
+        aT = [[0 for _ in range(len(self.data))] for _ in range(len(self.data[0]))]
+        for i,row in enumerate(self.data):
+            for j in range(len(row)):
+                aT[j][i] = self.data[i][j]
+
+        return Matrix[K](aT)
 
 def linear_combination(vs: list[Vector], es: list[K]) -> Vector[K]:
 
