@@ -122,6 +122,18 @@ class Matrix (Generic[K]):
                     result[i][j] += self.data[i][k] * mat.data[k][j]
 
         return Matrix[K](result)
+    
+    def trace(self) -> K:
+        sum = 0
+        if len(self.data) == 0:
+            return 0
+        
+        dim = len(self.data[0])
+        for i,row in enumerate(self.data):
+            if len(row) != dim:
+                raise ValueError("Matrix is not square.")
+            sum += row[i]
+        return sum
         
 
 def linear_combination(vs: list[Vector], es: list[K]) -> Vector[K]:
